@@ -13,6 +13,8 @@ public class Call: NSObject {
     public var uuid: UUID
     public var data: Data
     public var isOutGoing: Bool
+
+    public var isAccepted: Bool = false
     
     public var handle: String?
     
