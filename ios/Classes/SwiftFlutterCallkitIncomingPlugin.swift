@@ -567,24 +567,12 @@ public class SwiftFlutterCallkitIncomingPlugin: NSObject, FlutterPlugin, CXProvi
         call.endCall()
         self.callManager.removeCall(call)
         if (self.answerCall == nil && self.outgoingCall == nil) {
-            if let reason = call.data["reason"] as? String, reason == "CALL_ENDED" {
-                // Don't treat it as a user decline
-                print("[Callkit] Call was ended remotely, skipping DECLINE API")
-                action.fulfill()
-            } else {
-                sendEvent(SwiftFlutterCallkitIncomingPlugin.ACTION_CALL_DECLINE, self.data?.toJSON())
-                if let appDelegate = UIApplication.shared.delegate as? CallkitIncomingAppDelegate {
-                    appDelegate.onDecline(call, action)
-                } else {
-                    action.fulfill()
-                }
-            }
-//             sendEvent(SwiftFlutterCallkitIncomingPlugin.ACTION_CALL_DECLINE, self.data?.toJSON())
-//             if let appDelegate = UIApplication.shared.delegate as? CallkitIncomingAppDelegate {
-//                 appDelegate.onDecline(call, action)
-//             } else {
-//                 action.fulfill()
-//             }
+             sendEvent(SwiftFlutterCallkitIncomingPlugin.ACTION_CALL_DECLINE, self.data?.toJSON())
+             if let appDelegate = UIApplication.shared.delegate as? CallkitIncomingAppDelegate {
+                 appDelegate.onDecline(call, action)
+             } else {
+                 action.fulfill()
+             }
         }else {
             self.answerCall = nil
             sendEvent(SwiftFlutterCallkitIncomingPlugin.ACTION_CALL_ENDED, call.data.toJSON())
